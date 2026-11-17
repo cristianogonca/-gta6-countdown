@@ -1,0 +1,58 @@
+
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="GTA 6">
+<title>GTA 6 Countdown</title>
+<style>
+  * { box-sizing: border-box; margin: 0; }
+  body {
+    min-height: 100dvh; padding: env(safe-area-inset-top) 16px env(safe-area-inset-bottom);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    background: linear-gradient(160deg, #ff3d81 0%, #ff8a3d 45%, #3b1c6e 100%);
+    color: #fff; font-family: -apple-system, system-ui, sans-serif; text-align: center;
+  }
+  h1 { font-size: 3.2rem; font-weight: 900; }
+  .sub { opacity: .9; margin: 4px 0 28px; letter-spacing: 3px; font-size: .8rem; text-transform: uppercase; }
+  .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; width: 100%; max-width: 360px; }
+  .box { background: rgba(0,0,0,.35); border-radius: 18px; padding: 18px 8px; }
+  .num { font-size: 3rem; font-weight: 800; font-variant-numeric: tabular-nums; }
+  .lbl { font-size: .7rem; letter-spacing: 2px; text-transform: uppercase; opacity: .8; }
+  .date { margin-top: 24px; font-size: .9rem; }
+  .done { font-size: 2.2rem; font-weight: 900; }
+</style>
+</head>
+<body>
+  <h1>GTA VI</h1>
+  <div class="sub">Contagem regressiva</div>
+  <div id="app" class="grid">
+    <div class="box"><div class="num" id="d">0</div><div class="lbl">dias</div></div>
+    <div class="box"><div class="num" id="h">0</div><div class="lbl">horas</div></div>
+    <div class="box"><div class="num" id="m">0</div><div class="lbl">minutos</div></div>
+    <div class="box"><div class="num" id="s">0</div><div class="lbl">segundos</div></div>
+  </div>
+  <div class="date" id="date"></div>
+<script>
+  const TARGET = new Date(2026, 10, 19, 0, 0, 0);
+  const $ = id => document.getElementById(id);
+  $('date').textContent = 'Lançamento: ' + TARGET.toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
+  function tick() {
+    const diff = Math.floor((TARGET - Date.now()) / 1000);
+    if (diff <= 0) {
+      $('app').innerHTML = '<div class="done" style="grid-column:1/-1">🎮 Já saiu!</div>';
+      return;
+    }
+    $('d').textContent = Math.floor(diff / 86400);
+    $('h').textContent = String(Math.floor(diff % 86400 / 3600)).padStart(2, '0');
+    $('m').textContent = String(Math.floor(diff % 3600 / 60)).padStart(2, '0');
+    $('s').textContent = String(diff % 60).padStart(2, '0');
+    setTimeout(tick, 1000 - Date.now() % 1000);
+  }
+  tick();
+</script>
+</body>
+</html>
